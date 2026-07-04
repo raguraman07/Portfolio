@@ -8,9 +8,9 @@ import { motion } from "framer-motion";
 // 2. Add a new Email Service and copy the Service ID below.
 // 3. Create an Email Template and copy the Template ID below.
 // 4. Go to Account > API Keys and copy your Public Key below.
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+const EMAILJS_SERVICE_ID = "service_uyg8d2m";
+const EMAILJS_TEMPLATE_ID = "template_5picqat";
+const EMAILJS_PUBLIC_KEY = "mIuIr3sWeYRmRQg0l";
 // ─────────────────────────────────────────────────────────────────────────────
 
 interface FormState {
