@@ -9,7 +9,7 @@ const techStack = [
   { name: "VS Code", icon: "https://cdn.simpleicons.org/visualstudiocode/007ACC", color: "#007ACC" },
   { name: "Linux", icon: "https://cdn.simpleicons.org/linux/FCC624", color: "#FCC624" },
   { name: "Antigravity AI", icon: "https://cdn.simpleicons.org/googlegemini/8E75C2", color: "#8E75C2" },
-  { name: "Prompt Eng", icon: "https://cdn.simpleicons.org/openai/412951", color: "#412951" },
+  { name: "Prompt Eng", icon: "https://icons8.com/icon/Nts60kQIvGqe/chatgpt", color: "#412951" },
   { name: "HTML5", icon: "https://cdn.simpleicons.org/html5/E34F26", color: "#E34F26" },
   { name: "CSS3", icon: "https://cdn.simpleicons.org/css3/1572B6", color: "#1572B6" },
   { name: "JS", icon: "https://cdn.simpleicons.org/javascript/F7DF1E", color: "#F7DF1E" },
