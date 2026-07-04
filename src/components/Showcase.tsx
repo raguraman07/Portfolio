@@ -1,20 +1,17 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 
 const techStack = [
-  { name: "Java", icon: "https://cdn.simpleicons.org/java/007396", color: "#007396" },
+  { name: "Java", icon: "https://img.icons8.com/color/48/java-coffee-cup-logo--v1.png", color: "#007396" },
   { name: "Python", icon: "https://cdn.simpleicons.org/python/3776AB", color: "#3776AB" },
-  { name: "C", icon: "https://cdn.simpleicons.org/c/A8B9CC", color: "#A8B9CC" },
+  { name: "C", icon: "https://img.icons8.com/color/48/c-programming.png", color: "#A8B9CC" },
   { name: "MySQL", icon: "https://cdn.simpleicons.org/mysql/4479A1", color: "#4479A1" },
   { name: "Firebase", icon: "https://cdn.simpleicons.org/firebase/FFCA28", color: "#FFCA28" },
-  { name: "VS Code", icon: "https://cdn.simpleicons.org/visualstudiocode/007ACC", color: "#007ACC" },
+  { name: "VS Code", icon: "https://img.icons8.com/color/48/visual-studio--v2.png", color: "#007ACC" },
   { name: "Linux", icon: "https://cdn.simpleicons.org/linux/FCC624", color: "#FCC624" },
-  { name: "Antigravity AI", icon: "https://cdn.simpleicons.org/googlegemini/8E75C2", color: "#8E75C2" },
-  { name: "Prompt Eng", icon: "https://icons8.com/icon/Nts60kQIvGqe/chatgpt", color: "#412951" },
-  { name: "HTML5", icon: "https://cdn.simpleicons.org/html5/E34F26", color: "#E34F26" },
-  { name: "CSS3", icon: "https://cdn.simpleicons.org/css3/1572B6", color: "#1572B6" },
-  { name: "JS", icon: "https://cdn.simpleicons.org/javascript/F7DF1E", color: "#F7DF1E" },
-  { name: "Networking", icon: "https://cdn.simpleicons.org/wireshark/167EE6", color: "#167EE6" },
-  { name: "Security", icon: "https://cdn.simpleicons.org/auth0/EB5424", color: "#EB5424" }
+  { name: "Antigravity AI", icon: "public/GoogleAntigravityIcon.tsx", color: "#8E75C2" },
+  { name: "Prompt Eng", icon: "https://img.icons8.com/fluency/48/claude-ai.png", color : "#000000" },
+  { name: "Networking", icon: "https://img.icons8.com/color-glass/48/decentralized-network.png", color: "#167EE6" },
+  { name: "Security", icon: "https://img.icons8.com/fluency/48/cyber-security.png", color: "#EB5424" }
 ];
 
 const projects = [
