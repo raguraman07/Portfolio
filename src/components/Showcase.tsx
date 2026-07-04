@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect} from "react";
 
 const techStack = [
   { name: "Java", icon: "https://img.icons8.com/color/48/java-coffee-cup-logo--v1.png", color: "#007396" },
@@ -8,7 +8,7 @@ const techStack = [
   { name: "Firebase", icon: "https://cdn.simpleicons.org/firebase/FFCA28", color: "#FFCA28" },
   { name: "VS Code", icon: "https://img.icons8.com/color/48/visual-studio--v2.png", color: "#007ACC" },
   { name: "Linux", icon: "https://cdn.simpleicons.org/linux/FCC624", color: "#FCC624" },
-  { name: "Antigravity AI", icon: "public/GoogleAntigravityIcon.tsx", color: "#8E75C2" },
+  { name: "Antigravity AI", icon: "public/antigravity-color.svg", color: "#8E75C2" },
   { name: "Prompt Eng", icon: "https://img.icons8.com/fluency/48/claude-ai.png", color : "#000000" },
   { name: "Networking", icon: "https://img.icons8.com/color-glass/48/decentralized-network.png", color: "#167EE6" },
   { name: "Security", icon: "https://img.icons8.com/fluency/48/cyber-security.png", color: "#EB5424" }
