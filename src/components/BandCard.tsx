@@ -36,7 +36,7 @@ extend({
   MeshLineMaterial,
 });
 
-const GLTF_PATH = "/assets/models/card.glb";
+const GLTF_PATH = "C:\Users\param\OneDrive\Documents\Ragu's Portfolio\public\assets\models\card.glb";
 
 useGLTF.preload(GLTF_PATH);
 
