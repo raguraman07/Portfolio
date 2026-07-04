@@ -18,15 +18,14 @@ const projects = [
   {
     title: "Resume Builder",
     tech: "HTML + CSS + JS",
-    thumbnail: "/assets/card-front.png",
+    thumbnail: "public/resume.jpg",
     github: "https://github.com/raguraman07/resume-builder",
   }
 ];
 
 const certificates = [
-  { title: "Cyber Security Certification", tech: "Fundamentals", thumbnail: "/assets/avatar.png" },
-  { title: "Java Programming Certification", tech: "Java SE Standard", thumbnail: "/assets/avatar.png" },
-  { title: "Python Programming Certification", tech: "Python Core", thumbnail: "/assets/avatar.png" },
+  { title: "Microsoft Azure AI Certification", tech: "Fundamentals", thumbnail: "public/assets/resume/Azure.jpeg" },
+  { title: "NASSCOM Certification", tech: "Digital Edge 101", thumbnail: "public/assets/resume/nasscom.jpeg" },
 ];
 
 const GithubIcon = () => (
