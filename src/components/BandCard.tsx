@@ -36,7 +36,7 @@ extend({
   MeshLineMaterial,
 });
 
-const GLTF_PATH = "public/assets/models/card.glb";
+const GLTF_PATH = "public/assets/models/RAGURAMAN.glb";
 
 useGLTF.preload(GLTF_PATH);
 
