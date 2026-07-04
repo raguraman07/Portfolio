@@ -121,7 +121,7 @@ export default function About() {
           className="flex flex-col items-center"
         >
           <img
-            src="/assets/avatar.png"
+            src="public/assets/card-front.png"
             alt="Raguraman"
             className="
               w-[200px]
