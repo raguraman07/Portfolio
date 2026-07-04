@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 // 3. Create an Email Template and copy the Template ID below.
 // 4. Go to Account > API Keys and copy your Public Key below.
 const EMAILJS_SERVICE_ID = "service_uyg8d2m";
-const EMAILJS_TEMPLATE_ID = "template_5picqat";
+const EMAILJS_TEMPLATE_ID = "template_rc8qmek";
 const EMAILJS_PUBLIC_KEY = "mIuIr3sWeYRmRQg0l";
 // ─────────────────────────────────────────────────────────────────────────────
 
