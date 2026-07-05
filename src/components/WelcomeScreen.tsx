@@ -166,7 +166,7 @@ export default function WelcomeScreen() {
             }}
             className="inline-block overflow-hidden whitespace-nowrap"
           >
-            raguraman.portfolio
+            raguraman.void
           </motion.span>
 
           <motion.span

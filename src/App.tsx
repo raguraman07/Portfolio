@@ -340,13 +340,22 @@ bg-[length:200%_auto]
 bg-gradient-to-r
 from-white via-white/60 to-white
 animate-[shine_4s_linear_infinite]">
-                Creating
                 <br />
-                Websites
+
                 <br />
-                That Feel
+
                 <br />
-                Alive.
+
+                <br />
+
+                <br />
+
+                <br />
+                 Hack ethically.
+                <br />
+                Learn endlessly.
+                <br />
+                Secure fearlessly..
               </p>
 
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mt-auto">
