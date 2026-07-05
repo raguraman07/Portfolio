@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Download } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import CyberBackground from "../components/CyberBackground";
 
 export default function About() {
   const navigate = useNavigate();
@@ -69,7 +70,10 @@ export default function About() {
 
   return (
     <div className="relative min-h-screen bg-black overflow-hidden text-white px-4 sm:px-6 py-10">
-      {/* ANIMATED BACKGROUND EFFECTS */}
+      {/* CYBER BACKGROUND ANIMATION */}
+      <CyberBackground />
+
+      {/* AMBIENT GLOW EFFECTS */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-white/5 rounded-full blur-3xl opacity-20" />
         <div className="absolute bottom-20 right-10 w-72 h-72 bg-white/5 rounded-full blur-3xl opacity-20" />

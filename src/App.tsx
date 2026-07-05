@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import favicon from "/favicon.ico";
 
-import heroEye from "@/assets/hero-eye.png";
-
 import WelcomeScreen from "@/components/WelcomeScreen";
 import FrontendDeveloperSection from "@/components/FrontendDeveloperSection";
 import Showcase from "./components/Showcase";
 import ContactSection from "@/components/ContactSection";
 import { Routes, Route } from "react-router-dom";
 import About from "./pages/About";
+import CyberBackground from "@/components/CyberBackground";
 
 
 const logos = ["RAGURAMAN", "CYBERSECURITY", "PYTHON", "DEVELOPER", "AI-ASSISTED"];
@@ -110,7 +109,8 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={
-        <div className="min-h-screen bg-black text-white overflow-x-hidden">
+        <div className="min-h-screen bg-black text-white overflow-x-hidden relative">
+          <CyberBackground />
           <AnimatePresence>{showWelcome && <WelcomeScreen />}</AnimatePresence>
 
           <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 backdrop-blur-xl bg-black/20 border-b border-white/10">
@@ -249,14 +249,59 @@ export default function App() {
 
           <section
             id="Home"
-            className="relative w-full h-screen min-h-[640px] overflow-hidden bg-black"
+            className="relative w-full h-screen min-h-[640px] overflow-hidden bg-transparent"
           >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <img
-                src={heroEye}
-                alt="Hero"
-                className="h-[90%] w-[90%] object-contain object-center"
-              />
+            {/* Premium glowing orb — replaces hero-eye.png */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div style={{
+                position: "relative",
+                width: "min(72vw, 600px)",
+                height: "min(72vw, 600px)",
+              }}>
+                {/* Outer slow pulse */}
+                <div style={{
+                  position: "absolute", inset: "-14%",
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 55%, transparent 80%)",
+                  animation: "orbOuter 7s ease-in-out infinite",
+                }} />
+                {/* Mid ring */}
+                <div style={{
+                  position: "absolute", inset: "8%",
+                  borderRadius: "50%",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  animation: "orbRotate 18s linear infinite",
+                }} />
+                {/* Inner glow core */}
+                <div style={{
+                  position: "absolute", inset: "22%",
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.04) 45%, transparent 75%)",
+                  animation: "orbPulse 4s ease-in-out infinite",
+                }} />
+                {/* Bright center dot */}
+                <div style={{
+                  position: "absolute",
+                  top: "50%", left: "50%",
+                  transform: "translate(-50%,-50%)",
+                  width: 14, height: 14,
+                  borderRadius: "50%",
+                  background: "rgba(255,255,255,0.7)",
+                  boxShadow: "0 0 28px 10px rgba(255,255,255,0.18), 0 0 80px 30px rgba(255,255,255,0.07)",
+                  animation: "orbPulse 4s ease-in-out infinite",
+                }} />
+                {/* Orbiting tick marks */}
+                {[0,60,120,180,240,300].map((deg) => (
+                  <div key={deg} style={{
+                    position: "absolute",
+                    top: "50%", left: "50%",
+                    width: 1, height: "42%",
+                    transformOrigin: "top center",
+                    transform: `rotate(${deg}deg) translateX(-50%)`,
+                    background: "linear-gradient(to bottom, rgba(255,255,255,0.15), transparent)",
+                  }} />
+                ))}
+              </div>
             </div>
 
             <div className="relative z-10 w-full h-full flex flex-col justify-between px-6 md:px-12 pt-24 pb-10">
@@ -377,6 +422,18 @@ animate-[shine_4s_linear_infinite]">
         }
         .animate-marquee {
           animation: marquee 10s linear infinite;
+        }
+        @keyframes orbPulse {
+          0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+          50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.18); }
+        }
+        @keyframes orbOuter {
+          0%, 100% { opacity: 0.6; transform: scale(1); }
+          50%       { opacity: 1;   transform: scale(1.06); }
+        }
+        @keyframes orbRotate {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
         }
       `}</style>
 

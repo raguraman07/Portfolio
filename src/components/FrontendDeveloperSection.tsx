@@ -8,7 +8,7 @@ export default function FrontendDeveloperSection() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { amount: 0.4 });
 
-  const [showCard, setShowCard] = useState(false);
+  const [showCard, setShowCard] = useState(true);
   const [mounted, setMounted] = useState(false);
   const [goAbout, setGoAbout] = useState(false);
 
@@ -57,7 +57,7 @@ export default function FrontendDeveloperSection() {
         duration: 1.8,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="relative w-full min-h-screen bg-black text-white overflow-hidden flex items-start px-6 md:px-20 pt-16 md:pt-28 select-none"
+      className="relative w-full min-h-screen bg-transparent text-white overflow-hidden flex items-start px-6 md:px-20 pt-16 md:pt-28 select-none"
     >
       {/* TEXT */}
       <div className="relative z-10 max-w-2xl">
