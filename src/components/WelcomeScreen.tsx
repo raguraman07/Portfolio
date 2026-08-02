@@ -1,201 +1,293 @@
-import { motion } from "framer-motion";
-import { Code2, User, Shield } from "lucide-react";
-import { useEffect } from "react";
+'use client'
 
-export default function WelcomeScreen() {
-  const icons = [Code2, User, Shield];
+import { useEffect, useRef, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
+interface WelcomeScreenProps {
+  onComplete?: () => void
+}
+
+// Lines that cycle through while the welcome screen is up
+const WELCOME_LINES = [
+  'Welcome to my portfolio',
+  "Let's build something great",
+  'Have a look around',
+]
+
+export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const pathRef = useRef<SVGPathElement | null>(null)
+  const [lineIndex, setLineIndex] = useState(0)
+
+  // Interactive string coordinate system
+  const width = 600
+  const height = 200
+  const baselineY = 100
+
+  // Mouse tracking state
+  const [mouse, setMouse] = useState({ x: 300, y: 100, active: false })
+
+  // Spring physics variables
+  const physicsRef = useRef({
+    cx: 300,
+    cy: 100,
+    vx: 0,
+    vy: 0,
+  })
+
+  const [pathData, setPathData] = useState(`M 0,${baselineY} Q 300,${baselineY} 600,${baselineY}`)
+
+  // 1. Auto-dismiss the welcome screen after a shorter delay
   useEffect(() => {
-    // scroll band
-    document.body.style.overflow = "hidden";
+    const duration = 2800 // time on screen before fading out
 
-    return () => {
-      // welcome screen hatne ke baad scroll wapas
-      document.body.style.overflow = "auto";
-    };
-  }, []);
+    const timer = setTimeout(() => {
+      onComplete?.()
+    }, duration)
+
+    return () => clearTimeout(timer)
+  }, [onComplete])
+
+  // 1b. Cycle through the welcome lines while the screen is visible
+  useEffect(() => {
+    const lineInterval = setInterval(() => {
+      setLineIndex((prev) => (prev + 1) % WELCOME_LINES.length)
+    }, 600)
+
+    return () => clearInterval(lineInterval)
+  }, [])
+
+  // 2. String spring physics loop
+  useEffect(() => {
+    let frameId: number
+
+    const updatePhysics = () => {
+      const state = physicsRef.current
+
+      // Target position: midpoint if inactive, cursor coordinates if active
+      let targetX = width / 2
+      let targetY = baselineY
+
+      if (mouse.active) {
+        targetX = mouse.x
+        targetY = mouse.y
+      }
+
+      // Spring equations
+      const stiffness = 0.088
+      const damping = 0.84
+
+      const ax = (targetX - state.cx) * stiffness
+      const ay = (targetY - state.cy) * stiffness
+
+      state.vx = (state.vx + ax) * damping
+      state.vy = (state.vy + ay) * damping
+
+      state.cx += state.vx
+      state.cy += state.vy
+
+      // Apply quadratic bezier boundary caps to prevent excessive stretching
+      state.cy = Math.max(20, Math.min(180, state.cy))
+
+      setPathData(`M 0,${baselineY} Q ${state.cx},${state.cy} ${width},${baselineY}`)
+
+      frameId = requestAnimationFrame(updatePhysics)
+    }
+
+    updatePhysics()
+
+    return () => cancelAnimationFrame(frameId)
+  }, [mouse])
+
+  // 3. Translate client mouse coordinates to local SVG viewBox space
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+
+    const mxVal = ((e.clientX - rect.left) / rect.width) * width
+    const myVal = ((e.clientY - rect.top) / rect.height) * height
+
+    // Activate string interaction when cursor is nearby the SVG container vertical center
+    const distToCenter = Math.abs(e.clientY - (rect.top + rect.height / 2))
+    if (distToCenter < 140) {
+      setMouse({ x: mxVal, y: myVal, active: true })
+    } else {
+      setMouse({ x: width / 2, y: baselineY, active: false })
+    }
+  }
+
+  const handleMouseLeave = () => {
+    setMouse({ x: width / 2, y: baselineY, active: false })
+  }
 
   return (
-    <motion.div
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
-      exit={{
-        opacity: 0,
-        scale: 1.05,
-        transition: {
-          duration: 1.2,
-          ease: [0.22, 1, 0.36, 1],
-        },
+    <div
+      style={{
+        width: '100%',
+        height: '100vh',
+        background: '#05070a',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        overflow: 'hidden',
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
       }}
-      className="fixed inset-0 z-[99999] flex items-center justify-center bg-black overflow-hidden p-5"
     >
-      {/* Background Glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[420px] h-[420px] bg-white/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-150px] right-[-80px] w-[300px] h-[300px] bg-white/5 blur-[100px] rounded-full" />
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{
-          duration: 1.2,
-          ease: [0.22, 1, 0.36, 1],
+      {/* Delicate gradient background glow */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.02) 0%, transparent 70%)',
         }}
-        className="relative text-center text-white flex flex-col items-center gap-5 w-full max-w-[340px]"
+      />
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          width: '100%',
+          maxWidth: '460px',
+          padding: '24px',
+          zIndex: 10,
+        }}
       >
-        {/* Icons */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: 0.25,
-              },
-            },
+        {/* Minimal Title */}
+        <motion.h1
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: 'easeOut' }}
+          style={{
+            fontFamily: "'Syne', sans-serif",
+            fontSize: 'clamp(22px, 5vw, 28px)',
+            fontWeight: 500,
+            letterSpacing: '0.3em',
+            color: '#ffffff',
+            textTransform: 'uppercase',
+            marginBottom: '40px',
+            userSelect: 'none',
           }}
-          className="flex gap-4 items-center justify-center"
         >
-          {icons.map((Icon, i) => (
-            <motion.div
+          RAGURAMAN
+        </motion.h1>
+
+        {/* Interactive String Box */}
+        <div
+          ref={containerRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{
+            width: '100%',
+            height: '120px',
+            display: 'flex',
+            alignItems: 'center',
+            cursor: 'pointer',
+            overflow: 'visible',
+            touchAction: 'none',
+          }}
+        >
+          <svg
+            viewBox={`0 0 ${width} ${height}`}
+            width="100%"
+            height="100%"
+            fill="none"
+            style={{ overflow: 'visible', pointerEvents: 'none' }}
+          >
+            {/* Background alignment/track line */}
+            <path d={pathData} stroke="rgba(255, 255, 255, 0.05)" strokeWidth="1.5" />
+
+            {/* Glowing string line, fully lit */}
+            <path
+              ref={pathRef}
+              d={pathData}
+              stroke="url(#welcomeProgressGrad)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              style={{
+                filter: 'drop-shadow(0px 0px 8px rgba(16, 185, 129, 0.45))',
+              }}
+            />
+
+            <defs>
+              <linearGradient id="welcomeProgressGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#10b981" />
+                <stop offset="100%" stopColor="#06b6d4" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        {/* Cycling welcome line */}
+        <div
+          style={{
+            marginTop: '32px',
+            height: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            userSelect: 'none',
+          }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={lineIndex}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              style={{
+                fontSize: '12px',
+                color: '#e2e8f0',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                fontWeight: 500,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {WELCOME_LINES[lineIndex]}
+            </motion.span>
+          </AnimatePresence>
+        </div>
+
+        {/* Small pulsing dots animation to fill the loading moment */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '6px',
+            marginTop: '18px',
+            userSelect: 'none',
+          }}
+        >
+          {[0, 1, 2].map((i) => (
+            <motion.span
               key={i}
-              variants={{
-                hidden: {
-                  opacity: 0,
-                  scale: 0.3,
-                  rotate: -140,
-                  y: 60,
-                },
-                visible: {
-                  opacity: 1,
-                  scale: 1,
-                  rotate: 0,
-                  y: 0,
-                },
+              animate={{
+                opacity: [0.25, 1, 0.25],
+                scale: [0.85, 1.15, 0.85],
               }}
               transition={{
-                duration: 1.3,
-                ease: [0.22, 1, 0.36, 1],
+                duration: 1.1,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: i * 0.18,
               }}
-              whileHover={{
-                scale: 1.08,
+              style={{
+                width: '5px',
+                height: '5px',
+                borderRadius: '50%',
+                background: '#10b981',
               }}
-              className="w-[48px] h-[48px] rounded-full border border-white/10 flex items-center justify-center bg-white/5 backdrop-blur-md shadow-[0_0_25px_rgba(255,255,255,0.05)]"
-            >
-              <Icon size={20} color="white" />
-            </motion.div>
+            />
           ))}
-        </motion.div>
-
-        {/* Text */}
-        <div className="flex flex-col items-center gap-1">
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            <motion.span
-              initial={{ opacity: 0, x: 120 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{
-                delay: 1,
-                duration: 1.1,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="text-[clamp(22px,5vw,34px)] font-black tracking-tight"
-            >
-              Welcome
-            </motion.span>
-
-            <motion.span
-              initial={{ opacity: 0, x: -120 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{
-                delay: 1.2,
-                duration: 1.1,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="text-[clamp(22px,5vw,34px)] font-black tracking-tight"
-            >
-              to my
-            </motion.span>
-          </div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 70 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              delay: 1.4,
-              duration: 1.2,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="text-[clamp(24px,6vw,38px)] font-black tracking-tight leading-tight text-center"
-          >
-            Portfolio Website
-          </motion.h1>
         </div>
-
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.7 }}
-          transition={{
-            delay: 1.8,
-            duration: 1,
-          }}
-          className="text-sm text-white/60 tracking-wide"
-        >
-          Creating Websites That Feel Alive.
-        </motion.p>
-
-        {/* Website Badge */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            delay: 2,
-            duration: 0.5,
-          }}
-          className="px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs tracking-[0.25em] text-white/70 shadow-[0_0_30px_rgba(255,255,255,0.04)] overflow-hidden"
-        >
-          <motion.span
-            initial={{ width: "0ch" }}
-            animate={{ width: "19ch" }}
-            transition={{
-              delay: 2.2,
-              duration: 2,
-              ease: "easeInOut",
-            }}
-            className="inline-block overflow-hidden whitespace-nowrap"
-          >
-            raguraman.void
-          </motion.span>
-
-          <motion.span
-            animate={{
-              opacity: [1, 0, 1],
-            }}
-            transition={{
-              duration: 0.5,
-              repeat: Infinity,
-            }}
-            className="ml-[2px]"
-          >
-            |
-          </motion.span>
-        </motion.div>
-
-        {/* Bottom Loading Line */}
-        <div className="mt-10 w-[240px] bg-white/20 h-[2px] overflow-hidden rounded-full">
-          <motion.div
-            initial={{ width: "10%" }}
-            animate={{ width: "100%" }}
-            transition={{
-              duration: 6.5,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="h-full bg-white"
-          />
-        </div>
-      </motion.div>
-    </motion.div>
-  );
+      </div>
+    </div>
+  )
 }
